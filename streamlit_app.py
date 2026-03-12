@@ -53,22 +53,22 @@ if nms_file and rfcomm_file:
 
     st.markdown("---")
     
-    # 3. COMPREHENSIVE DIAGNOSTIC REPORT (As per your request)
+    # 3. COMPREHENSIVE DIAGNOSTIC REPORT
     st.header("📋 Kavach Comprehensive Diagnostic Report")
     
     # Section 1: Locomotive Health
     st.subheader("1. Locomotive Health (Loco Side Analysis)")
-    st.write(f"**Radio 1 Failure Rate:** {r1_fail:.2f}% (Packet drops specific stations par).")
-    st.write(f"**Radio 2 Failure Rate:** {r2_fail:.2f}% (Packet drops specific stations par).")
+    st.write(f"**Radio 1 Failure Rate:** {r1_fail:.2f}% (Packet drops at specific stations).")
+    st.write(f"**Radio 2 Failure Rate:** {r2_fail:.2f}% (Packet drops at specific stations).")
     
     if abs(r1_fail - r2_fail) < 20:
-        st.success("✅ **Diagnosis:** Kyunki dono radios ek hi tarah se behave kar rahe hain aur kai stations par 100% result de rahe hain, isliye **Loco hardware (Antenna/Cable) bilkul sahi hai.**")
+        st.success("✅ **Diagnosis:** Since both radios behave similarly and provide 100% results at several stations, the **Loco hardware (Antenna/Cable) is completely healthy.**")
     else:
-        st.error(f"🚨 **Diagnosis:** Radio levels mein bada antar hai. Loco hardware (Antenna/Radio Module) mein fault suspected hai.")
+        st.error("🚨 **Diagnosis:** Significant difference in radio levels. Fault suspected in Loco hardware (Antenna/Radio Module).")
 
     # Section 2: Station Health
     st.subheader("2. Station Health (Trackside Analysis)")
-    st.write("Datalogger ke mutabiq, niche diye gaye stations par packet reception percentage target se kam hai:")
+    st.write("According to the logs, the following stations have packet reception percentages below the target:")
     
     if not bad_stns_df.empty:
         for index, row in bad_stns_df.iterrows():
@@ -76,10 +76,9 @@ if nms_file and rfcomm_file:
         
         # Section 3: Final Verdict
         st.markdown("---")
-        worst_stn = bad_stns_df.iloc[0]['Station Id']
-        st.error(f"🏁 **Final Verdict:** Problem **STATION TCAS / TRACKSIDE** mein hai. **{', '.join(bad_stns_df['Station Id'].tolist())}** stations ke radio antenna alignment aur trackside signal coverage ko check karne ki zarurat hai.")
+        st.error(f"🏁 **Final Verdict:** The problem is in the **STATION TCAS / TRACKSIDE** equipment. Radio antenna alignment and trackside signal coverage need to be checked at **{', '.join(bad_stns_df['Station Id'].tolist())}** stations.")
     else:
-        st.success("✅ **Final Verdict:** Sabhi stations par signal coverage behtar hai. System Healthy hai.")
+        st.success("✅ **Final Verdict:** Signal coverage is optimal across all stations. System is Healthy.")
 
 else:
     st.warning("Please upload both TRNMSNMA and RFCOMM CSV files to generate the report.")
